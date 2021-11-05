@@ -4,11 +4,11 @@ let poision = [];
 let count = 0;
 let show = true;
 let currentgen = 1;
-let val = 1; 
+let val = 1;
 function setup() {
-    createCanvas(400, 400);
+    createCanvas(windowWidth, windowHeight);
 
-    for (let i = 0; i < 100; i++) {
+    for (let i = 0; i < 150; i++) {
         food[i] = createVector(random(width), random(height))
 
     }
@@ -16,7 +16,7 @@ function setup() {
         poision[i] = createVector(random(width), random(height))
 
     }
-    for (let j = 0; j < 10; j++) {
+    for (let j = 0; j < 15; j++) {
         vehical[j] = new arrow;
     }
 }
@@ -45,7 +45,7 @@ function draw() {
                 val = 1;
             }
             for (let k = 0; k < vehical.length; k++) {
-                if(k!=j){
+                if (k != j) {
                     vehical[j].seek(vehical[k].pos, false);
 
                 }
@@ -63,18 +63,22 @@ function draw() {
             }
         }
         if (!show && vehical[fit]) {
-            // vehical[fit].show();
-            val = 1000;
+            textSize(20);
+            fill(255, 255, 255);
+            // stroke(255, 0, 0);
+            text("Fast Mode Enabled", 5, 20);
+            val = 100;
         }
+        // noStroke();
         for (let k = 0; k < vehical.length; k++) {
             if (k == fit) {
-               vehical[fit].col = color(0,255,0);
+                vehical[fit].col = color(0, 255, 0);
             } else {
-               vehical[k].col = color(map(vehical[k].health, 0,100, 255,0),0,0);
-               // console.log(map(vehical[k].health, 0,100, 0,255));
+                vehical[k].col = color(map(vehical[k].health, 0, 100, 255, 0), 0, 0);
+                // console.log(map(vehical[k].health, 0,100, 0,255));
             }
         }
-       // if (vehical[fit]) { console.log(vehical[fit].health, "gen-", vehical[fit].gen, "current gen", currentgen); }
+        // if (vehical[fit]) { console.log(vehical[fit].health, "gen-", vehical[fit].gen, "current gen", currentgen); }
         if (count == 1000 && vehical[fit]) {
             console.log("reproduced");
             vehical.push(new arrow);
@@ -84,12 +88,18 @@ function draw() {
             vehical[vehical.length - 1].maxforce = vehical[fit].maxforce + random(-0.2, 0.2)
             vehical[vehical.length - 1].gen = vehical[fit].gen + 1;
             currentgen++;
-             vehical[fit].health =100;
+            vehical[fit].health = 100;
             count = 0;
         }
         count++;
+        textSize(20);
+    fill(255, 255, 255);
+    // stroke(255, 0, 0);
+    text("Cur Gen :" + currentgen, windowWidth - 150, 20);
+    text("Fittest Gen :" + vehical[fit].gen, windowWidth - 150, 50);
+
     }
-}
+    }
 function mouseClicked() {
     if (show) {
         show = false;
